@@ -1,5 +1,5 @@
 {
-  "name": "nestjs-stdschema",
+  "name": "@mag123c/nestjs-stdschema",
   "version": "0.1.0",
   "description": "Universal schema validation for NestJS using standard-schema spec. Support Zod, Valibot, ArkType and 20+ validators with a single package.",
   "main": "./dist/index.js",

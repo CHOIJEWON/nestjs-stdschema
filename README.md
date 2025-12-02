@@ -1,9 +1,9 @@
-# nestjs-stdschema
+# @mag123c/nestjs-stdschema
 
 Universal schema validation for NestJS using the [standard-schema](https://github.com/standard-schema/standard-schema) specification.
 
-[![npm version](https://img.shields.io/npm/v/nestjs-stdschema.svg)](https://www.npmjs.com/package/nestjs-stdschema)
-[![CI](https://github.com/mag123c/nestjs-stdschema/actions/workflows/ci.yml/badge.svg)](https://github.com/mag123c/nestjs-stdschema/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/@mag123c/nestjs-stdschema.svg)](https://www.npmjs.com/package/@mag123c/nestjs-stdschema)
+[![CI](https://github.com/mag123c/@mag123c/nestjs-stdschema/actions/workflows/ci.yml/badge.svg)](https://github.com/mag123c/@mag123c/nestjs-stdschema/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Why This Package?
@@ -17,11 +17,11 @@ Universal schema validation for NestJS using the [standard-schema](https://githu
 ## Installation
 
 ```bash
-npm install nestjs-stdschema
+npm install @mag123c/nestjs-stdschema
 # or
-pnpm add nestjs-stdschema
+pnpm add @mag123c/nestjs-stdschema
 # or
-yarn add nestjs-stdschema
+yarn add @mag123c/nestjs-stdschema
 ```
 
 Then install your preferred validator:
@@ -43,7 +43,7 @@ npm install arktype
 
 ```typescript
 import { Body, Controller, Post } from '@nestjs/common';
-import { StandardValidationPipe } from 'nestjs-stdschema';
+import { StandardValidationPipe } from '@mag123c/nestjs-stdschema';
 import { z } from 'zod';
 
 const CreateUserSchema = z.object({
@@ -67,7 +67,7 @@ export class UsersController {
 ### With DTO Class
 
 ```typescript
-import { createStandardDto, StandardValidationPipe } from 'nestjs-stdschema';
+import { createStandardDto, StandardValidationPipe } from '@mag123c/nestjs-stdschema';
 import { z } from 'zod';
 
 const CreateUserSchema = z.object({
@@ -94,7 +94,7 @@ export class UsersController {
 ### Global Pipe
 
 ```typescript
-import { StandardValidationPipe } from 'nestjs-stdschema';
+import { StandardValidationPipe } from '@mag123c/nestjs-stdschema';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -109,7 +109,7 @@ async function bootstrap() {
 ### With Valibot
 
 ```typescript
-import { StandardValidationPipe } from 'nestjs-stdschema';
+import { StandardValidationPipe } from '@mag123c/nestjs-stdschema';
 import * as v from 'valibot';
 
 const CreateUserSchema = v.object({
@@ -135,7 +135,7 @@ import {
   StandardSerializerInterceptor,
   ResponseSchema,
   createStandardDto,
-} from 'nestjs-stdschema';
+} from '@mag123c/nestjs-stdschema';
 import { z } from 'zod';
 
 const UserResponseSchema = z.object({
@@ -214,7 +214,7 @@ Creates a DTO class from a schema with:
 ### Type Utilities
 
 ```typescript
-import { InferInput, InferOutput } from 'nestjs-stdschema';
+import { InferInput, InferOutput } from '@mag123c/nestjs-stdschema';
 
 type Input = InferInput<typeof MySchema>;   // Input type
 type Output = InferOutput<typeof MySchema>; // Output type
@@ -261,7 +261,7 @@ new StandardValidationPipe(schema, {
 DTOs created with `createStandardDto` automatically work with `@nestjs/swagger`:
 
 ```typescript
-import { createStandardDto } from 'nestjs-stdschema';
+import { createStandardDto } from '@mag123c/nestjs-stdschema';
 import { z } from 'zod';
 
 const UserSchema = z.object({
