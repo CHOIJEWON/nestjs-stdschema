@@ -3,12 +3,12 @@
 Universal schema validation for NestJS using the [standard-schema](https://github.com/standard-schema/standard-schema) specification.
 
 [![npm version](https://img.shields.io/npm/v/@mag123c/nestjs-stdschema.svg)](https://www.npmjs.com/package/@mag123c/nestjs-stdschema)
-[![CI](https://github.com/mag123c/@mag123c/nestjs-stdschema/actions/workflows/ci.yml/badge.svg)](https://github.com/mag123c/@mag123c/nestjs-stdschema/actions/workflows/ci.yml)
+[![CI](https://github.com/mag123c/nestjs-stdschema/actions/workflows/ci.yml/badge.svg)](https://github.com/mag123c/nestjs-stdschema/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Why This Package?
 
-- **One package, 20+ validators**: Works with Zod, Valibot, ArkType, and any validator implementing the standard-schema spec
+- **One package, any standard-schema validator**: Tested with Zod & Valibot, compatible with 20+ validators implementing the spec
 - **Zero vendor lock-in**: Switch validators without changing your NestJS code
 - **Type-safe**: Full TypeScript support with automatic type inference
 - **OpenAPI ready**: Automatic Swagger documentation via `@nestjs/swagger` integration
@@ -141,7 +141,7 @@ import { z } from 'zod';
 const UserResponseSchema = z.object({
   id: z.string(),
   name: z.string(),
-  // email and password are excluded
+  // email and password are excluded from schema
 });
 
 class UserResponseDto extends createStandardDto(UserResponseSchema) {}
@@ -164,6 +164,25 @@ export class UsersController {
   }
 }
 ```
+
+### Global Interceptor
+
+```typescript
+import { Reflector } from '@nestjs/core';
+import { StandardSerializerInterceptor } from '@mag123c/nestjs-stdschema';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+
+  app.useGlobalInterceptors(
+    new StandardSerializerInterceptor(app.get(Reflector))
+  );
+
+  await app.listen(3000);
+}
+```
+
+> **Note**: The serializer strips extra fields by leveraging the validator's default behavior. Both Zod and Valibot strip unknown keys by default. If your validator preserves extra keys, use its strict/strip mode explicitly.
 
 ## API Reference
 
@@ -269,11 +288,17 @@ const UserSchema = z.object({
   email: z.string().email(),
 });
 
-// Zod v4+ automatically generates OpenAPI schema
 class UserDto extends createStandardDto(UserSchema) {}
+```
 
-// For validators without toJSONSchema, provide manual metadata
-class UserDto extends createStandardDto(ValibotSchema, {
+**OpenAPI schema generation:**
+
+- **Zod v4+**: Automatically generates OpenAPI schema via native `toJSONSchema()`
+- **Zod v3.x / Other validators**: Provide manual metadata
+
+```typescript
+// For validators without native toJSONSchema (Zod v3.x, Valibot, etc.)
+class UserDto extends createStandardDto(UserSchema, {
   openapi: {
     name: { type: 'string', example: 'John' },
     email: { type: 'string', format: 'email' },
@@ -287,11 +312,13 @@ Any validator implementing the [standard-schema](https://github.com/standard-sch
 
 | Validator | Version | Status |
 |-----------|---------|--------|
-| [Zod](https://github.com/colinhacks/zod) | ^3.24.0 | Tested |
+| [Zod](https://github.com/colinhacks/zod) | ^3.24 / ^4.0 | Tested |
 | [Valibot](https://github.com/fabian-hiller/valibot) | ^1.0.0 | Tested |
-| [ArkType](https://github.com/arktypeio/arktype) | ^2.0.0 | Compatible |
-| [TypeBox](https://github.com/sinclairzx81/typebox) | ^0.32.0 | Compatible |
-| And 20+ more... | | |
+| [ArkType](https://github.com/arktypeio/arktype) | ^2.0.0 | Compatible* |
+| [TypeBox](https://github.com/sinclairzx81/typebox) | ^0.32.0 | Compatible* |
+| And more... | | [See full list](https://github.com/standard-schema/standard-schema#what-schema-libraries-implement-the-spec) |
+
+> *Compatible: Implements standard-schema spec but not tested in this package. PRs welcome!
 
 ## Requirements
 
