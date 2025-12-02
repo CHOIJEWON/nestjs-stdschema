@@ -1,0 +1,36 @@
+# Source
+src
+tests
+
+# Config files
+.eslintrc.js
+.prettierrc
+tsconfig.json
+tsup.config.ts
+vitest.config.ts
+
+# IDE
+.idea
+.vscode
+
+# Git
+.git
+.gitignore
+
+# Docs
+docs
+*.md
+!README.md
+
+# CI
+.github
+
+# Test
+coverage
+
+# AI Tools
+.claude
+.codex
+.cursor
+.aider*
+.continue
